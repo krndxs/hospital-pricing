@@ -1,1 +1,1 @@
-web: sh setup.sh && streamlit run model_integration.py
+web: sh setup.sh && streamlit run --server.port $PORT model_integration.py
