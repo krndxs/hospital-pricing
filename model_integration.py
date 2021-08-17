@@ -13,6 +13,7 @@ import plotly.graph_objects as go
 import sys
 #sys.tracebacklimit = 0
 token = 'pk.eyJ1IjoiZGVuaWxzIiwiYSI6ImNrcm13aGZ6aTd6Mm0ydW1uNm4yZnhkOWoifQ.rDR3etgUeyNpJELeH-Qwtw'
+from pathlib import Path
 
 #Model
 class HospitalPricingClassifier(BaseEstimator, ClassifierMixin):
@@ -21,6 +22,13 @@ class HospitalPricingClassifier(BaseEstimator, ClassifierMixin):
                  HospitalLocPath='hospital_model3',
                  PricesPath='prices_clean3',
                  threshold=100):
+        
+        if not Path('hospital_model3').is_file():
+            HospitalLocPath = wget.download('https://www.dropbox.com/s/o7o7g22axysmgj2/hospital_model3?dl=1')
+    
+        if not Path('prices_clean3').is_file():
+            PricesPath = wget.download('https://www.dropbox.com/s/222q52i8mcd8as6/prices_clean3?dl=1')
+            
         self.hospital_loc = pd.read_parquet(HospitalLocPath)
         self.prices = pd.read_parquet(PricesPath)
 
