@@ -1,8 +1,10 @@
 #Imports
+
 from os import system
 from pandas.core.algorithms import mode
 from pandas.core.frame import DataFrame
 import streamlit as st
+import wget
 import pandas as pd
 import geocoder
 import numpy as np
@@ -11,9 +13,10 @@ from sklearn.base import BaseEstimator, ClassifierMixin
 from geopy.distance import geodesic
 import plotly.graph_objects as go
 import sys
+
+from pathlib import Path
 #sys.tracebacklimit = 0
 token = 'pk.eyJ1IjoiZGVuaWxzIiwiYSI6ImNrcm13aGZ6aTd6Mm0ydW1uNm4yZnhkOWoifQ.rDR3etgUeyNpJELeH-Qwtw'
-from pathlib import Path
 
 #Model
 class HospitalPricingClassifier(BaseEstimator, ClassifierMixin):
@@ -22,7 +25,6 @@ class HospitalPricingClassifier(BaseEstimator, ClassifierMixin):
                  HospitalLocPath='hospital_model3',
                  PricesPath='prices_clean3',
                  threshold=100):
-        
         if not Path('hospital_model3').is_file():
             HospitalLocPath = wget.download('https://www.dropbox.com/s/o7o7g22axysmgj2/hospital_model3?dl=1')
     
