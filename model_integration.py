@@ -12,23 +12,22 @@ from sklearn.base import BaseEstimator, ClassifierMixin
 from geopy.distance import geodesic
 import plotly.graph_objects as go
 import sys
+import boto3
 from pathlib import Path
-import gdown
 #sys.tracebacklimit = 0
 token = 'pk.eyJ1IjoiZGVuaWxzIiwiYSI6ImNrcm13aGZ6aTd6Mm0ydW1uNm4yZnhkOWoifQ.rDR3etgUeyNpJELeH-Qwtw'
-url = 'https://drive.google.com/file/d/14pNrUA1S43zw-RK9ck6rRKSIlJ_u-pmR/view?usp=sharing'
 #Model
 class HospitalPricingClassifier(BaseEstimator, ClassifierMixin):
 
     @st.cache
     def __init__(self,
                  HospitalLocPath='hospital_model3',
-                 PricesPath='test',
+                 PricesPath='prices_model3',
                  threshold=100):
-           
+            
         
         self.hospital_loc = pd.read_parquet(HospitalLocPath)
-        self.prices = pd.read_parquet(PricesPath)    
+        self.prices = pd.read_parquet('prices_model')    
 
     def _get_distance(self,p_lat, p_lng, threshold=100):
 
@@ -136,9 +135,22 @@ def make_fig(mean_prices, address):
 
 
 #Streamlit
+@st.cache
+def load_files():
+    pass
+    s3 = boto3.client(
+        's3',
+        aws_access_key_id= st.secrets["key_id"],
+        aws_secret_access_key= st.secrets["access_key"],
+        )
+    s3.download_file('hospitalpricing', 'prices_model3', 'prices_model')
+
+
+load_files()
 model = HospitalPricingClassifier()
 
 with st.form(key = 'form_one'):
+    st.write("Used AWS")
     st.title('Hospital Pricing Model')
     address = st.text_input('Enter location')
     procedure = st.selectbox('Choose procedure', model.description())
