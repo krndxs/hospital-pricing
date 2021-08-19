@@ -135,7 +135,7 @@ def make_fig(mean_prices, address):
 
 
 #Streamlit
-@st.cache(allow_output_mutation=True)
+@st.cache(hash_funcs={"_thread.RLock": lambda _: None})
 def load_files():
     pass
     s3 = boto3.client(
