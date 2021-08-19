@@ -23,18 +23,12 @@ class HospitalPricingClassifier(BaseEstimator, ClassifierMixin):
     @st.cache
     def __init__(self,
                  HospitalLocPath='hospital_model3',
-                 PricesPath='pickle_prices.pkl',
+                 PricesPath='test',
                  threshold=100):
-            
-        f_checkpoint = Path("prices_model")
-
-        if not f_checkpoint.exists():
-            with st.spinner("Downloading model... this may take awhile! \n Don't stop it!"):
-                output = "prices_model"
-                gdown.download(url, output, quiet=False) 
+           
         
         self.hospital_loc = pd.read_parquet(HospitalLocPath)
-        self.prices = pd.read_parquet("prices_model")    
+        self.prices = pd.read_parquet(PricesPath)    
 
     def _get_distance(self,p_lat, p_lng, threshold=100):
 
