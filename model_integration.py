@@ -13,7 +13,7 @@ from sklearn.base import BaseEstimator, ClassifierMixin
 from geopy.distance import geodesic
 import plotly.graph_objects as go
 import sys
-
+import boto3
 from pathlib import Path
 #sys.tracebacklimit = 0
 token = 'pk.eyJ1IjoiZGVuaWxzIiwiYSI6ImNrcm13aGZ6aTd6Mm0ydW1uNm4yZnhkOWoifQ.rDR3etgUeyNpJELeH-Qwtw'
@@ -24,15 +24,17 @@ class HospitalPricingClassifier(BaseEstimator, ClassifierMixin):
     def __init__(self,
                  HospitalLocPath='hospital_model3',
                  PricesPath='prices_clean3',
-                 threshold=100):
-        if not Path('hospital_model3').is_file():
-            HospitalLocPath = wget.download('https://www.dropbox.com/s/o7o7g22axysmgj2/hospital_model3?dl=1')
-    
-        if not Path('prices_clean3').is_file():
-            PricesPath = wget.download('https://www.dropbox.com/s/222q52i8mcd8as6/prices_clean3?dl=1')
-            
+                 threshold=100):      
         self.hospital_loc = pd.read_parquet(HospitalLocPath)
-        self.prices = pd.read_parquet(PricesPath)
+        s3 = boto3.resource(
+            service_name='s3',
+            region_name='us-east-2',
+            aws_access_key_id='AKIATG6EKTVLD7EZQG4H',
+            aws_secret_access_key='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'
+        )
+
+        obj = s3.Bucket('hospitalpricing').Object('price_model3').get()
+        self.prices = pd.read_parquet(obj)
 
     def _get_distance(self,p_lat, p_lng, threshold=100):
 
