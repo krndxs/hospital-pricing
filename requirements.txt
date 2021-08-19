@@ -5,5 +5,4 @@ geopy==2.2.0
 pandas==1.1.5
 geocoder==1.38.1
 scikit_learn==0.24.2
-wget
-pyarrow==5.0.0
+boto3==1.18.24
