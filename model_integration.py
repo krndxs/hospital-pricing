@@ -13,9 +13,10 @@ from geopy.distance import geodesic
 import plotly.graph_objects as go
 import sys
 from pathlib import Path
+import gdown
 #sys.tracebacklimit = 0
 token = 'pk.eyJ1IjoiZGVuaWxzIiwiYSI6ImNrcm13aGZ6aTd6Mm0ydW1uNm4yZnhkOWoifQ.rDR3etgUeyNpJELeH-Qwtw'
-cloud_model_location = 'https://drive.google.com/file/d/1zEp0_9JLiVZrutv5_JovubezE4eC1Mlk/view?usp=sharing'
+url = 'https://drive.google.com/file/d/1zEp0_9JLiVZrutv5_JovubezE4eC1Mlk/view?usp=sharing'
 #Model
 class HospitalPricingClassifier(BaseEstimator, ClassifierMixin):
 
@@ -29,8 +30,8 @@ class HospitalPricingClassifier(BaseEstimator, ClassifierMixin):
 
         if not f_checkpoint.exists():
             with st.spinner("Downloading model... this may take awhile! \n Don't stop it!"):
-                from GD_download import download_file_from_google_drive
-                download_file_from_google_drive(cloud_model_location, f_checkpoint)
+                output = "prices_model"
+                gdown.download(url, output, quiet=False) 
         
         self.hospital_loc = pd.read_parquet(HospitalLocPath)
         self.prices = pd.read_parquet(f_checkpoint)    
