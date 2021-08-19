@@ -16,7 +16,7 @@ from pathlib import Path
 import gdown
 #sys.tracebacklimit = 0
 token = 'pk.eyJ1IjoiZGVuaWxzIiwiYSI6ImNrcm13aGZ6aTd6Mm0ydW1uNm4yZnhkOWoifQ.rDR3etgUeyNpJELeH-Qwtw'
-url = 'https://drive.google.com/file/d/1zEp0_9JLiVZrutv5_JovubezE4eC1Mlk/view?usp=sharing'
+url = 'https://drive.google.com/file/d/14pNrUA1S43zw-RK9ck6rRKSIlJ_u-pmR/view?usp=sharing'
 #Model
 class HospitalPricingClassifier(BaseEstimator, ClassifierMixin):
 
