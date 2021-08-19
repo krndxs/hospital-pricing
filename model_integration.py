@@ -4,7 +4,6 @@ from os import system
 from pandas.core.algorithms import mode
 from pandas.core.frame import DataFrame
 import streamlit as st
-import wget
 import pandas as pd
 import geocoder
 import numpy as np
@@ -20,7 +19,8 @@ token = 'pk.eyJ1IjoiZGVuaWxzIiwiYSI6ImNrcm13aGZ6aTd6Mm0ydW1uNm4yZnhkOWoifQ.rDR3e
 
 #Model
 class HospitalPricingClassifier(BaseEstimator, ClassifierMixin):
-
+    
+    @st.cache
     def __init__(self,
                  HospitalLocPath='hospital_model3',
                  PricesPath='prices_clean3',
