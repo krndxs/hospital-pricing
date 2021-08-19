@@ -26,7 +26,7 @@ class HospitalPricingClassifier(BaseEstimator, ClassifierMixin):
                  PricesPath='pickle_prices.pkl',
                  threshold=100):
             
-        f_checkpoint = Path("prices_model3")
+        f_checkpoint = Path("prices_model")
 
         if not f_checkpoint.exists():
             with st.spinner("Downloading model... this may take awhile! \n Don't stop it!"):
