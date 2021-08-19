@@ -4,6 +4,8 @@ from os import system
 from pandas.core.algorithms import mode
 from pandas.core.frame import DataFrame
 import streamlit as st
+import gzip
+import pickle5 as pickle
 import pandas as pd
 import geocoder
 import numpy as np
@@ -12,29 +14,28 @@ from sklearn.base import BaseEstimator, ClassifierMixin
 from geopy.distance import geodesic
 import plotly.graph_objects as go
 import sys
-import boto3
 from pathlib import Path
 #sys.tracebacklimit = 0
 token = 'pk.eyJ1IjoiZGVuaWxzIiwiYSI6ImNrcm13aGZ6aTd6Mm0ydW1uNm4yZnhkOWoifQ.rDR3etgUeyNpJELeH-Qwtw'
-
+cloud_model_location = 'https://drive.google.com/file/d/1zEp0_9JLiVZrutv5_JovubezE4eC1Mlk/view?usp=sharing'
 #Model
 class HospitalPricingClassifier(BaseEstimator, ClassifierMixin):
-    
+
     @st.cache
     def __init__(self,
                  HospitalLocPath='hospital_model3',
-                 PricesPath='prices_clean3',
-                 threshold=100):      
-        self.hospital_loc = pd.read_parquet(HospitalLocPath)
-        s3 = boto3.resource(
-            service_name='s3',
-            region_name='us-east-2',
-            aws_access_key_id='AKIATG6EKTVLD7EZQG4H',
-            aws_secret_access_key='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'
-        )
+                 PricesPath='pickle_prices.pkl',
+                 threshold=100):
+            
+        f_checkpoint = Path("prices_model3")
 
-        obj = s3.Bucket('hospitalpricing').Object('price_model3').get()
-        self.prices = pd.read_parquet(obj)
+        if not f_checkpoint.exists():
+            with st.spinner("Downloading model... this may take awhile! \n Don't stop it!"):
+                from GD_download import download_file_from_google_drive
+                download_file_from_google_drive(cloud_model_location, f_checkpoint)
+        
+        self.hospital_loc = pd.read_parquet(HospitalLocPath)
+        self.prices = pd.read_parquet(f_checkpoint)    
 
     def _get_distance(self,p_lat, p_lng, threshold=100):
 
