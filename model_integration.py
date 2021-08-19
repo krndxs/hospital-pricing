@@ -19,7 +19,7 @@ token = 'pk.eyJ1IjoiZGVuaWxzIiwiYSI6ImNrcm13aGZ6aTd6Mm0ydW1uNm4yZnhkOWoifQ.rDR3e
 #Model
 class HospitalPricingClassifier(BaseEstimator, ClassifierMixin):
 
-    @st.cache
+    @st.cache(allow_output_mutation=True)
     def __init__(self,
                  HospitalLocPath='hospital_model3',
                  PricesPath='prices_model3',
@@ -135,7 +135,7 @@ def make_fig(mean_prices, address):
 
 
 #Streamlit
-@st.cache
+@st.cache(allow_output_mutation=True)
 def load_files():
     pass
     s3 = boto3.client(
