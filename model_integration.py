@@ -34,7 +34,7 @@ class HospitalPricingClassifier(BaseEstimator, ClassifierMixin):
                 gdown.download(url, output, quiet=False) 
         
         self.hospital_loc = pd.read_parquet(HospitalLocPath)
-        self.prices = pd.read_parquet(f_checkpoint)    
+        self.prices = pd.read_parquet("prices_model")    
 
     def _get_distance(self,p_lat, p_lng, threshold=100):
 
